@@ -20,7 +20,7 @@ class DiplomskiRadovi implements iRadovi {
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $this->db->exec("SET NAMES 'utf8'");
         } catch (PDOException $e) {
-            die("Connection failed: " . $e->getMessage());
+            die("Connection failed");
         }
     }
 
@@ -49,19 +49,12 @@ class DiplomskiRadovi implements iRadovi {
     }
 
     private function getContent($url) {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $url);
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         $data = curl_exec($ch);
-        
-        if (curl_errno($ch)) {
-            echo "cURL Error: " . curl_error($ch) . " for URL: $url<br>";
-            $data = false;
-        }
-        
         curl_close($ch);
         return $data;
     }
@@ -72,7 +65,6 @@ class DiplomskiRadovi implements iRadovi {
             $html = $this->getContent($url);
 
             if ($html === false || empty($html)) {
-                echo "Neuspješno dohvaćanje sadržaja sa: $url<br>";
                 continue;
             }
 
@@ -80,29 +72,20 @@ class DiplomskiRadovi implements iRadovi {
             echo "<pre>" . htmlspecialchars(substr($html, 0, 500)) . "...</pre><br>";
 
             $dom = str_get_html($html);
-            if ($dom === false) {
-                echo "Neuspješno parsiranje HTML-a za: $url<br>";
+            if (!$dom) {
                 continue;
             }
 
-            $articles = $dom->find('article');
-            if (empty($articles)) {
-                echo "Nema pronađenih članaka na: $url<br>";
-                $dom->clear();
-                continue;
-            }
-
-            foreach ($articles as $article) {
+            foreach ($dom->find('article') as $article) {
                 $titleLinks = $article->find('a');
                 if (count($titleLinks) < 2) {
-                    echo "Nedovoljno linkova u članku na: $url<br>";
                     continue;
                 }
                 $naziv_rada = trim($titleLinks[1]->plaintext);
                 $link_rada = $titleLinks[1]->href;
 
                 $img = $article->find('img', 0);
-                $oib_tvrtke = "Nepoznat OIB";
+                $oib_tvrtke = "";
                 if ($img) {
                     preg_match('/\/(\d+)\.(png|jpg|jpeg)$/', $img->src, $matches);
                     if (isset($matches[1])) {
@@ -111,22 +94,18 @@ class DiplomskiRadovi implements iRadovi {
                 }
 
                 $detailHtml = $this->getContent($link_rada);
-                if ($detailHtml === false || empty($detailHtml)) {
-                    echo "Neuspješno dohvaćanje detalja sa: $link_rada<br>";
+                if (!$detailHtml) {
                     continue;
                 }
 
                 $detailDom = str_get_html($detailHtml);
-                if ($detailDom === false) {
-                    echo "Neuspješno parsiranje detalja za: $link_rada<br>";
+                if (!$detailDom) {
                     continue;
                 }
 
-                $tekst_rada = "Nema dostupnog teksta";
-                $contentSelectors = ['.entry-content', 'div.post-content', 'article .content'];
-                foreach ($contentSelectors as $selector) {
-                    $content = $detailDom->find($selector, 0);
-                    if ($content) {
+                $tekst_rada = "";
+                foreach (['.entry-content', 'div.post-content', 'article .content'] as $selector) {
+                    if ($content = $detailDom->find($selector, 0)) {
                         $tekst_rada = trim($content->plaintext);
                         break;
                     }
@@ -143,16 +122,11 @@ class DiplomskiRadovi implements iRadovi {
 
                 $detailDom->clear();
             }
-
             $dom->clear();
         }
     }
 }
 
-try {
-    $diplomski = new DiplomskiRadovi();
-    $diplomski->scrapeData();
-} catch (Exception $e) {
-    echo "Error: " . $e->getMessage();
-}
+$diplomski = new DiplomskiRadovi();
+$diplomski->scrapeData();
 ?>
