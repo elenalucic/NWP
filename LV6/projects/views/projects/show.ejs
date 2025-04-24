@@ -1,0 +1,87 @@
+<% include ../partials/header %>
+
+<h1 class="mb-4"><%= project.naziv %></h1>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <h5 class="card-title">Detalji projekta</h5>
+    <p><strong>Opis:</strong> <%= project.opis %></p>
+    <p><strong>Cijena:</strong> <%= project.cijena %> €</p>
+    <p><strong>Datum početka:</strong> <%= project.datumPocetka ? project.datumPocetka.toISOString().split('T')[0] : 'N/A' %></p>
+    <p><strong>Datum završetka:</strong> <%= project.datumZavrsetka ? project.datumZavrsetka.toISOString().split('T')[0] : 'N/A' %></p>
+    
+    <!-- Task List -->
+    <h6>Zadaci:</h6>
+    <% if (project.tasks && project.tasks.length > 0) { %>
+      <ul class="list-group mb-3">
+        <% project.tasks.forEach(task => { %>
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+              <input 
+                type="checkbox" 
+                <%= task.completed ? 'checked' : '' %> 
+                onchange="toggleTask('<%= project._id %>', '<%= task._id %>')"
+                class="me-2"
+              >
+              <%= task.description %>
+            </div>
+            <% if (task.completed && task.completedAt) { %>
+              <small class="text-muted">
+                Završeno: <%= task.completedAt.toISOString().split('T')[0] %>
+              </small>
+            <% } %>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>Nema zadataka</p>
+    <% } %>
+
+    <!-- Team Members -->
+    <h6>Članovi tima:</h6>
+    <% if (project.clanoviTima && project.clanoviTima.length > 0) { %>
+      <ul>
+        <% project.clanoviTima.forEach(clan => { %>
+          <li><%= clan.ime %> <%= clan.prezime %> - <%= clan.uloga %></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>Nema članova tima</p>
+    <% } %>
+
+    <a href="/projects/<%= project._id %>/edit" class="btn btn-warning btn-sm">Uredi</a>
+    <form action="/projects/<%= project._id %>?_method=DELETE" method="POST" class="d-inline">
+      <button class="btn btn-danger btn-sm">Obriši</button>
+    </form>
+    <a href="/projects" class="btn btn-secondary btn-sm">Natrag</a>
+  </div>
+</div>
+
+<!-- Form for adding team member -->
+<h5 class="mt-4">Dodaj člana tima</h5>
+<form action="/projects/<%= project._id %>/clan" method="POST" class="row g-3">
+  <div class="col-md-4">
+    <input type="text" class="form-control" name="ime" placeholder="Ime" required>
+  </div>
+  <div class="col-md-4">
+    <input type="text" class="form-control" name="prezime" placeholder="Prezime" required>
+  </div>
+  <div class="col-md-4">
+    <input type="text" class="form-control" name="uloga" placeholder="Uloga" required>
+  </div>
+  <div class="col-12">
+    <button type="submit" class="btn btn-success">Dodaj člana</button>
+  </div>
+</form>
+
+<script>
+function toggleTask(projectId, taskId) {
+  fetch(`/projects/${projectId}/tasks/${taskId}/toggle`, {
+    method: 'POST'
+  }).then(() => {
+    window.location.reload();
+  });
+}
+</script>
+
+<% include ../partials/footer %>
