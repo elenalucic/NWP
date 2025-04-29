@@ -1,0 +1,23 @@
+<% include ../partials/header %>
+
+  <h1 class="mb-4">Registracija</h1>
+
+  <form action="/auth/register" method="POST" class="row g-3">
+    <div class="col-12">
+      <label for="username" class="form-label">Korisničko ime</label>
+      <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+    <div class="col-12">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" name="email" required>
+    </div>
+    <div class="col-12">
+      <label for="password" class="form-label">Lozinka</label>
+      <input type="password" class="form-control" id="password" name="password" required>
+    </div>
+    <div class="col-12">
+      <button type="submit" class="btn btn-success">Registriraj se</button>
+    </div>
+  </form>
+
+  <% include ../partials/footer %>

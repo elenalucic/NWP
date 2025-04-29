@@ -1,0 +1,49 @@
+<% include ../partials/header %>
+
+<h1 class="mb-4">Svi projekti</h1>
+
+<div class="mb-3">
+  <label for="roleFilter" class="form-label">Prikaži projekte:</label>
+  <select id="roleFilter" class="form-select" onchange="filterProjects()">
+    <option value="all" <%= role === 'all' ? 'selected' : '' %>>Svi projekti</option>
+    <option value="leader" <%= role === 'leader' ? 'selected' : '' %>>Moji projekti (voditelj)</option>
+    <option value="member" <%= role === 'member' ? 'selected' : '' %>>Moji projekti(član)</option>
+  </select>
+</div>
+
+<% if (projects.length > 0) { %>
+  <div class="row">
+    <% projects.forEach(project => { %>
+      <div class="col-md-4 mb-3">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"><%= project.naziv %></h5>
+            <p class="card-text"><%= project.opis || 'Nema opisa' %></p>
+            <p class="card-text"><strong>Voditelj:</strong> <%= project.voditelj.username %></p>
+            <p class="card-text"><strong>Članovi tima:</strong> <%= project.clanoviTima.map(clan => clan.username).join(', ') || 'Nema članova' %></p>
+            <a href="/projects/<%= project._id %>" class="btn btn-primary">Pogledaj</a>
+            <% if (currentUser && project.voditelj._id.equals(currentUser._id)) { %>
+              <a href="/projects/<%= project._id %>/edit" class="btn btn-warning">Uredi</a>
+              <form action="/projects/<%= project._id %>?_method=DELETE" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Jeste li sigurni da želite obrisati ovaj projekt?')">Obriši</button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+<% } else { %>
+  <p>Nema projekata za prikaz.</p>
+<% } %>
+
+<a href="/projects/new" class="btn btn-success mt-3">Novi projekt</a>
+
+<script>
+function filterProjects() {
+  const role = document.getElementById('roleFilter').value;
+  window.location.href = `/projects?role=${role}`;
+}
+</script>
+
+<% include ../partials/footer %>
