@@ -1,0 +1,46 @@
+{% extends "app/base.html" %}
+
+{% load widget_tweaks %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BOOKNOW</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+</head>
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          {% for hidden in form.hidden_fields %}
+            {{ hidden }}
+          {% endfor %}
+          {% for field in form.visible_fields %}
+            {% if field.label != "Text" %}
+              <div class="form-group mt-3">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field|add_class:'form-control' }}
+                {% for error in field.errors %}
+                  <span class="help-block text-danger">{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          {% endfor %}
+          <div class="form-group mt-4 mb-5 text-center">
+            <button type="submit" class="btn btn-primary px-4 rounded-pill mr-2">
+              <span class="glyphicon glyphicon-ok"></span> Save
+            </button>
+            <a href="{% url 'app:apartman_detail' apartman.id %}" class="btn btn-secondary rounded-pill">Cancel</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+{% endblock %}

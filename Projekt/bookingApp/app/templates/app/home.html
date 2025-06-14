@@ -1,0 +1,69 @@
+{% extends 'app/base.html' %}
+{% block content %}
+{% load static %}
+
+
+<section class="header-image">
+    <div class="header-overlay">
+        <h1>Welcome to Our Apartments</h1>
+        <p>Find your perfect stay with us</p>
+    </div>
+</section>
+
+<div class="card-wrapper-home">
+    {% if user.is_superuser %}
+    <div class="add-apartman">
+        <a class="btn btn-block text-body load-content" href="{% url 'app:add_apartman' %}" style="background-color: gray;">Add apartman</a>
+    </div>
+    {% endif %}
+
+ 
+    {% for apartman in apartmans %}
+    <div class="card-home">
+        <div class="card-body-home">
+            {% if apartman.apartman_image %}
+            <a href="{% url 'app:apartman_detail' apartman.id %}" class="load-content" data-url="{% url 'app:apartman_detail' apartman.id %}">
+                <img src="{{ apartman.apartman_image.url }}" class="card-img-top" alt="{{ apartman.title }}">
+            </a>
+            {% endif %}
+            <div class="card-content">
+                <a href="{% url 'app:apartman_detail' apartman.id %}" class="load-content" data-url="{% url 'app:apartman_detail' apartman.id %}">
+                    <h5 class="card-title-home">{{ apartman.title }}</h5>
+                </a>
+                <p class="card-text"><b>Location:</b> {{ apartman.location }}</p>
+                <p class="card-text" data-type="price"><b>Price:</b> {{ apartman.price }} €</p>
+                {% if apartman.description %}
+                <div class="description-summary">
+                    <p class="summary-text">{{ apartman.description|slice:":100" }}{% if apartman.description|length > 100 %}...{% endif %}</p>
+                    {% if apartman.description|length > 100 %}
+                        <p><a href="#" class="show-more">Show more</a></p>
+                    {% endif %}
+                </div>
+                <div class="full-description" style="display: none;">
+                    <p>{{ apartman.description }}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <p>No available apartments</p>
+    {% endfor %}
+</div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll('.show-more').forEach(function(item) {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+            var descriptionSummary = this.closest('.description-summary');
+            var fullDescription = descriptionSummary.nextElementSibling;
+            fullDescription.style.display = 'block';
+            descriptionSummary.style.display = 'none';
+        });
+    });
+});
+</script>
+
+{% endblock content %}

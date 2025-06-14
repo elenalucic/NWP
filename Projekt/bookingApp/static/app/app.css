@@ -1,0 +1,680 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    background-color: #fffffe;
+}
+
+h1 {
+    color: #045B57;
+}
+
+p {
+    color: #3C3D42;
+}
+
+nav {
+    background-color: white;
+}
+
+#myNavbar {
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    background-color: rgba(211, 211, 211, 0.5);
+}
+
+.nav-link {
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.navbar-nav {
+    background-color: lightgray;
+    justify-content: center;
+}
+
+.custom-btn {
+    background-color: #9CCD62;
+    color: #fffffe;
+}
+
+.custom-btn2 {
+    background-color: #68b2f7;
+    color: #fffffe;
+}
+
+.title {
+    white-space: nowrap;
+    word-spacing: 1rem;
+    letter-spacing: 0.5rem;
+    padding-left: 40px;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+    padding: 0.5rem 1rem;
+}
+
+.form-control:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.help-block {
+    color: red; /* Consolidated from multiple definitions */
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+
+.mt-5 {
+    margin-top: 3rem !important;
+}
+
+.with-whitespace {
+    white-space: pre-wrap;
+}
+
+.margin--bottom {
+    margin-bottom: 2em;
+}
+
+.custom-table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 0;
+}
+
+.no-padding {
+    padding: 0;
+}
+
+.post h4 {
+    margin-top: 0;
+}
+
+.cta-button {
+    text-align: center;
+    background-color: #FF9900;
+    color: #FFFFFF;
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.stat-box {
+    text-align: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.post-details {
+    background-color: lightgray;
+    width: 500px;
+}
+
+.card-title {
+    font-size: 50px;
+}
+
+/* APARTMAN DETAIL */
+.content-apartman {
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding: 20px;
+}
+
+.edit-button {
+    margin: 10px;
+}
+
+.booking-details ul {
+    list-style-type: none;
+}
+
+.booking {
+    margin: 20px;
+    margin-left: 100px;
+    background-color: lightgray;
+    padding: 30px;
+    border-radius: 10px;
+    height: fit-content;
+}
+
+.card-text2 {
+    margin: 10px;
+}
+
+#id_end_date,
+#id_start_date {
+    border-radius: 7px;
+    padding: 10px;
+}
+
+.card-body b {
+    margin: 10px;
+}
+
+.card-detail {
+    border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    padding-top: 120px; /* Adjusted to move content down */
+}
+
+.card-title-detail {
+    font-size: 40px;
+    color: #333;
+    margin: 20px;
+    align-self: center;
+}
+
+.card-img-top {
+    margin-bottom: 15px;
+}
+
+.card-text-detail {
+    font-size: 16px;
+    color: #555;
+}
+
+#calendar {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 70%;
+    height: 600px;
+}
+
+.calendar {
+    display: flex;
+    flex-direction: row;
+    margin: 10px;
+}
+
+#booking-form {
+    margin-top: 20px;
+    padding: 10px;
+}
+
+#booking-form h3 {
+    margin-bottom: 15px;
+}
+
+#booking-form .btn-primary {
+    background-color: whitesmoke;
+    border-color: gray;
+    color: black;
+}
+
+#booking-form .btn-primary:hover {
+    background-color: gray;
+    border-color: black;
+    color: black;
+}
+
+.card-body-detail {
+    display: flex;
+    flex-direction: row;
+}
+
+.card-body-detail img {
+    width: 50%;
+    height: 50%;
+}
+
+.modal {
+    padding-top: 200px;
+    display: none;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 100%;
+    max-width: 900px;
+}
+
+.modal-content,
+#caption {
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+    from { transform: scale(0); }
+    to { transform: scale(1); }
+}
+
+.close {
+    padding-top: 100px;
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* HOME */
+.card-title-home {
+    font-size: 35px;
+    color: grey;
+}
+
+a {
+    text-decoration: none;
+}
+
+.add_apartman {
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.card-body-home img {
+    border-radius: 8px;
+}
+
+.card-body-home {
+    margin: 30px;
+}
+
+.card-wrapper {
+    margin: 20px;
+}
+
+.card-home {
+    border: 1px solid #ccc;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+.background-image {
+    background-size: cover;
+    background-position: center;
+    height: 800px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.add-apartman {
+    margin: 40px;
+}
+
+.container {
+    padding-top: 110px;
+}
+
+/* BASE */
+.header-image {
+    position: relative;
+    height: 365px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+.header-overlay {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header-overlay h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.header-overlay p {
+    font-size: 1.2rem;
+}
+
+.card-wrapper-home {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+.add-apartman {
+    margin-bottom: 20px;
+    text-align: center;
+    grid-column: 1 / -1;
+}
+
+.card-img-top {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body-home {
+    padding: 15px;
+}
+
+.card-content {
+    padding: 10px;
+}
+
+.card-title-home {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.card-text {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.card-text b {
+    color: #000;
+}
+
+.description-summary,
+.full-description {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.show-more {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.show-more:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .header-image {
+        height: 300px;
+    }
+
+    .header-overlay h1 {
+        font-size: 2rem;
+    }
+
+    .card-wrapper-home {
+        grid-template-columns: 1fr;
+    }
+
+    .card-detail {
+        padding: 10px;
+    }
+
+    .house-info-card {
+        padding: 20px;
+    }
+
+    .house-title {
+        font-size: 2rem;
+    }
+
+    .house-details {
+        flex-direction: column;
+    }
+
+    .house-img {
+        max-width: 100%;
+        height: 200px;
+    }
+
+    .info-item {
+        font-size: 1rem;
+    }
+
+    .booking-title {
+        font-size: 1.2rem;
+    }
+}
+
+.house-info-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.house-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    letter-spacing: 0.5px;
+}
+
+.house-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.house-img {
+    width: 100%;
+    max-width: 500px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.house-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+.info-item {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+    color: #555;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #333;
+    margin-right: 8px;
+}
+
+.info-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 20px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.booking-details {
+    margin-top: 25px;
+}
+
+.booking-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.booking-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.booking-list li {
+    font-size: 0.95rem;
+    color: #555;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.booking-list li:last-child {
+    border-bottom: none;
+}
+
+.edit-buttons {
+    margin-top: 25px;
+    text-align: center;
+}
+
+.edit-buttons .btn {
+    margin: 0 8px;
+    padding: 10px 20px;
+    font-size: 1rem;
+}
+
+.calendar {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+#calendar {
+    width: 100%;
+}
+
+.booking {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.booking h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.booking form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.booking .btn {
+    align-self: center;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}

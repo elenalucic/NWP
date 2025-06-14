@@ -1,0 +1,152 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="card-detail">
+    <div class="house-info-card">
+        <h1 class="house-title">{{ apartman.title }}</h1>
+        <div class="house-details">
+            {% if apartman.apartman_image %}
+            <img id="apartmanImage" src="{{ apartman.apartman_image.url }}" class="house-img" alt="{{ apartman.title }}">
+            {% endif %}
+            <div class="house-content">
+                <p class="info-item"><span class="info-label">Location:</span> {{ apartman.location }}</p>
+                <p class="info-item"><span class="info-label">Price:</span> {{ apartman.price }} €</p>
+                <p class="info-description">{{ apartman.description }}</p>
+                <p class="info-item"><span class="info-label">Contact number:</span> {{ apartman.contact_number }}</p>
+
+                {% if request.user.is_superuser %}
+                <div class="booking-details">
+                    <h3 class="booking-title">Bookings:</h3>
+                    <ul class="booking-list">
+                        {% for booking in bookings %}
+                        <li>
+                            <strong>{{ booking.user.username }}</strong> booked from 
+                            <strong>{{ booking.start_date }}</strong> to 
+                            <strong>{{ booking.end_date }}</strong>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% if user.is_superuser %}
+                <div class="edit-buttons">
+                    <a href="{% url 'app:edit_apartman' apartman.id %}" class="btn btn-secondary">Edit Apartman</a>
+                    <form method="post" action="{% url 'app:delete_apartman' apartman.id %}" style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar and Booking Form (Unchanged) -->
+    <div class="calendar">
+        <div id='calendar'></div>
+        <div class="booking">
+            <h3>Book this apartman</h3>
+            <form id="booking-form" method="post" action="{% url 'app:add_booking' %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="hidden" name="apartman" value="{{ apartman.id }}">
+                <button type="submit" class="btn btn-primary">Book</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Image Modal (Unchanged) -->
+<div id="imageModal" class="modal">
+    <span class="close">×</span>
+    <img class="modal-content" id="imgInModal">
+    <div id="caption"></div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: {
+            url: "{% url 'app:fetch_bookings' apartman.id %}",
+            method: 'GET'
+        }
+    });
+    calendar.render();
+
+    document.getElementById('booking-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var form = event.target;
+
+        fetch("{% url 'app:add_booking' %}", {
+            method: 'POST',
+            body: new FormData(form),
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                calendar.refetchEvents();
+                alert('Booking successful!');
+                updateBookingDetails();
+                location.reload();
+            } else {
+                alert(data.message || 'Booking failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Booking failed. Please try again.');
+        });
+    });
+
+    var modal = document.getElementById('imageModal');
+    var img = document.getElementById('apartmanImage');
+    var modalImg = document.getElementById('imgInModal');
+    var captionText = document.getElementById('caption');
+    var span = document.getElementsByClassName('close')[0];
+
+    img.onclick = function() {
+        modal.style.display = 'block';
+        modalImg.src = this.src;
+        captionText.innerHTML = this.alt;
+    }
+
+    span.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    modal.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+    function updateBookingDetails() {
+        fetch("{% url 'app:fetch_bookings' apartman.id %}")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                var bookingDetails = document.querySelector('.booking-details ul');
+                bookingDetails.innerHTML = '';
+                data.bookings.forEach(function(booking) {
+                    var bookingItem = document.createElement('li');
+                    bookingItem.innerHTML = "<strong>" + booking.user.username + "</strong> booked from <strong>" + booking.start_date + "</strong> to <strong>" + booking.end_date + "</strong>";
+                    bookingDetails.appendChild(bookingItem);
+                });
+            } else {
+                console.error('Error:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+});
+</script>
+
+{% endblock %}
