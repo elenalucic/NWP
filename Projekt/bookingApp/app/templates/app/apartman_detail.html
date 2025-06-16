@@ -42,7 +42,7 @@
         </div>
     </div>
 
-    <!-- Calendar and Booking Form (Unchanged) -->
+  
     <div class="calendar">
         <div id='calendar'></div>
         <div class="booking">
@@ -57,7 +57,7 @@
     </div>
 </div>
 
-<!-- Image Modal (Unchanged) -->
+
 <div id="imageModal" class="modal">
     <span class="close">×</span>
     <img class="modal-content" id="imgInModal">
@@ -66,6 +66,11 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+
+    const today = new Date().toISOString().split('T')[0];
+    document.querySelectorAll('input[type="date"]').forEach(input => {
+        input.setAttribute('min', today);
+    });
     var calendarEl = document.getElementById('calendar');
     var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',

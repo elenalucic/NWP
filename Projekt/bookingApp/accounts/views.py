@@ -71,8 +71,12 @@ def login_api(request):
             if user is not None:
                 login(request, user)
                 return JsonResponse({'success': True})
-        return JsonResponse({'success': False, 'errors': form.errors}, status=400)
+            else:
+                return JsonResponse({'success': False, 'errors': {'__all__': ['Invalid username or password']}}, status=400)
+        else:
+            return JsonResponse({'success': False, 'errors': form.errors}, status=400)
     return JsonResponse({'success': False, 'message': 'Invalid request method.'}, status=400)
+
 
 @api_view(['POST'])
 def logout_api(request):

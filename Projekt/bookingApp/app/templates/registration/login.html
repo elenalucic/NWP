@@ -54,7 +54,6 @@
 
     let hasError = false;
 
-
     if (!username) {
       document.getElementById('usernameError').textContent = 'Username is required';
       hasError = true;
@@ -66,14 +65,47 @@
     }
 
     if (!hasError) {
-    
-      this.submit();
+      fetch("{% url 'accounts:login_api' %}", {
+        method: 'POST',
+        headers: {
+          'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          username: username,
+          password: password
+        })
+      })
+      .then(response => response.json().then(data => ({ status: response.status, body: data })))
+      .then(({ status, body }) => {
+        if (status === 200 && body.success) {
+          window.location.href = "{% url 'app:home' %}";
+        } else {
+          if (body.errors) {
+            if (body.errors.username) {
+              document.getElementById('usernameError').textContent = body.errors.username[0];
+            }
+            if (body.errors.password) {
+              document.getElementById('passwordError').textContent = body.errors.password[0];
+            }
+            if (body.errors.__all__) {
+              document.getElementById('passwordError').textContent = body.errors.__all__[0];
+            }
+          } else {
+            document.getElementById('passwordError').textContent = 'Login failed.';
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('passwordError').textContent = 'Server error.';
+      });
     }
   });
-
-
-
 </script>
+
+
+
 
 
 {% endblock %}
